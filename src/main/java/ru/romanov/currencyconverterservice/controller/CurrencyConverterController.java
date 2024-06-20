@@ -1,6 +1,8 @@
 package ru.romanov.currencyconverterservice.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.bucket4j.Bucket;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,30 +14,80 @@ import ru.romanov.currencyconverterservice.service.CurrencyConverterService;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Контроллер для обработки запросов, связанных с конвертацией валют.
+ * <p>
+ * Этот контроллер предоставляет эндпоинты для получения текущих курсов валют,
+ * конвертации суммы из одной валюты в другую, а также получения поддерживаемых валют.
+ */
 @RestController
 @RequestMapping("/api/currency")
+@AllArgsConstructor
 public class CurrencyConverterController {
-
-    @Autowired
     private CurrencyConverterService currencyConverterService;
+    private final Bucket bucket;
 
+    /**
+     * Получение текущих курсов валют.
+     *
+     * @return ResponseEntity с объектом CurrencyResponse, содержащим текущие курсы валют.
+     */
     @GetMapping("/rates")
     public ResponseEntity<CurrencyResponse> getCurrencyRates() {
-        CurrencyResponse convertedAmount = currencyConverterService.getDailyCurrencyRates();
-        return ResponseEntity.ok(convertedAmount);
+        if (bucket.tryConsume(1)) {
+            CurrencyResponse convertedAmount = currencyConverterService.getDailyCurrencyRates();
+            return ResponseEntity.ok(convertedAmount);
+        } else {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
+        }
     }
 
+    /**
+     * Конвертация суммы из одной валюты в другую.
+     *
+     * @param from   код исходной валюты.
+     * @param to     код целевой валюты.
+     * @param amount сумма для конвертации.
+     * @return ResponseEntity с конвертированной суммой типа Double.
+     */
     @GetMapping("/convert")
     public ResponseEntity<Double> convertCurrency(
             @RequestParam String from,
             @RequestParam String to,
             @RequestParam double amount) {
-        return ResponseEntity.ok(currencyConverterService.convert(from, to, amount));
+        if (bucket.tryConsume(1)) {
+            return ResponseEntity.ok(currencyConverterService.convert(from, to, amount));
+        } else {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
+        }
     }
 
-    @GetMapping("/supported")
-    public ResponseEntity<List<String>> getSupportedCurrencies() {
-        List<String> supportedCurrencies = currencyConverterService.getSupportedCurrencies();
-        return ResponseEntity.ok(supportedCurrencies);
+    /**
+     * Получение поддерживаемой карты валют.
+     *
+     * @return ResponseEntity с картой поддерживаемых валют (ключ - код валюты, значение - название валюты).
+     */
+    @GetMapping("/supported-currency-map")
+    public ResponseEntity<Map<String, String>> getSupportedCurrencies() {
+        if (bucket.tryConsume(1)) {
+            return ResponseEntity.ok(currencyConverterService.getSupportedCurrencies());
+        } else {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
+        }
+    }
+
+    /**
+     * Получение списка поддерживаемых кодов валют.
+     *
+     * @return ResponseEntity со списком строк, представляющих коды поддерживаемых валют.
+     */
+    @GetMapping("/supported-codes")
+    public ResponseEntity<List<String>> getSupportedCurrenciesCharCodes() {
+        if (bucket.tryConsume(1)) {
+            List<String> supportedCurrencies = currencyConverterService.getSupportedCurrenciesCharCode();
+            return ResponseEntity.ok(supportedCurrencies);
+        } else {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
+        }
     }
 }

@@ -6,6 +6,11 @@ import lombok.Setter;
 
 import java.util.Map;
 
+/**
+ * Класс представляет ответ на запрос о курсах валют.
+ * <p>
+ * Каждый объект данного класса содержит информацию о текущих курсах валют на определённую дату.
+ */
 @Getter
 @Setter
 public class CurrencyResponse {

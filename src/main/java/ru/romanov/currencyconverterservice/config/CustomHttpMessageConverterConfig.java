@@ -11,9 +11,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Конфигурационный класс для настройки HTTP-конвертеров в приложении.
+ * <p>
+ * Этот класс содержит методы конфигурации для установки кастомного HTTP-конвертера
+ * {@link MappingJackson2HttpMessageConverter} в {@link RestTemplate}.
+ */
 @Configuration
 public class CustomHttpMessageConverterConfig {
-
+    /**
+     * Создает и возвращает экземпляр {@link RestTemplate}, настроенный с кастомным HTTP-конвертером.
+     *
+     * @return экземпляр {@link RestTemplate} с кастомным HTTP-конвертером.
+     */
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
@@ -23,6 +33,13 @@ public class CustomHttpMessageConverterConfig {
         return restTemplate;
     }
 
+    /**
+     * Создает и возвращает кастомный {@link MappingJackson2HttpMessageConverter}.
+     * <p>
+     * Конвертер настроен для поддержки типа медиа "application/javascript" с кодировкой UTF-8.
+     *
+     * @return кастомный {@link MappingJackson2HttpMessageConverter}.
+     */
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();

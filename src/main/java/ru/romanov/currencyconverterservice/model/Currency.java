@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Модель представления валюты, используемая для десериализации JSON данных о валюте.
+ * <p>
+ * Каждое поле соответствует соответствующему свойству в JSON объекте о валюте.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
