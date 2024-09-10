@@ -30,7 +30,7 @@ public class CurrencyConverterController {
     /**
      * Получение текущих курсов валют.
      *
-     * @return ResponseEntity с объектом CurrencyResponse, содержащим текущие курсы валют.
+     * @return {@link ResponseEntity} с объектом {@link CurrencyResponse}, содержащим текущие курсы валют.
      */
     @GetMapping("/rates")
     public ResponseEntity<CurrencyResponse> getCurrencyRates() {
@@ -48,7 +48,7 @@ public class CurrencyConverterController {
      * @param from   код исходной валюты.
      * @param to     код целевой валюты.
      * @param amount сумма для конвертации.
-     * @return ResponseEntity с конвертированной суммой типа Double.
+     * @return {@link ResponseEntity} с конвертированной суммой типа {@link Double}.
      */
     @GetMapping("/convert")
     public ResponseEntity<Double> convertCurrency(
@@ -65,7 +65,7 @@ public class CurrencyConverterController {
     /**
      * Получение поддерживаемой карты валют.
      *
-     * @return ResponseEntity с картой поддерживаемых валют (ключ - код валюты, значение - название валюты).
+     * @return {@link ResponseEntity} с картой поддерживаемых валют (ключ - код валюты, значение - название валюты).
      */
     @GetMapping("/supported-currency-map")
     public ResponseEntity<Map<String, String>> getSupportedCurrencies() {
@@ -79,7 +79,7 @@ public class CurrencyConverterController {
     /**
      * Получение списка поддерживаемых кодов валют.
      *
-     * @return ResponseEntity со списком строк, представляющих коды поддерживаемых валют.
+     * @return {@link ResponseEntity} со списком строк, представляющих коды поддерживаемых валют.
      */
     @GetMapping("/supported-codes")
     public ResponseEntity<List<String>> getSupportedCurrenciesCharCodes() {

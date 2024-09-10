@@ -12,7 +12,7 @@ import java.time.Duration;
  * Конфигурационный класс для настройки Rate Limiter в приложении.
  * <p>
  * Этот класс определяет бин {@link Bucket}, который представляет собой ограничитель (Rate Limiter),
- * настроенный на заданное количество запросов (RATE_LIMIT) за определенный период времени (TIME_LIMIT_PER_SECONDS).
+ * настроенный на заданное количество запросов {@code RATE_LIMIT} за определенный период времени {@code TIME_LIMIT_PER_SECONDS}.
  * Используется библиотека Bucket4j для реализации Rate Limiter.
  */
 @Configuration
@@ -23,7 +23,7 @@ public class RateLimiterConfig {
     /**
      * Создает и возвращает бин {@link Bucket} для Rate Limiter.
      * <p>
-     * Ограничитель настроен на RATE_LIMIT попыток за TIME_LIMIT_PER_SECONDS секунд.
+     * Ограничитель настроен на {@code RATE_LIMIT} попыток за {@code TIME_LIMIT_PER_SECONDS} секунд.
      *
      * @return экземпляр {@link Bucket} для Rate Limiter.
      */

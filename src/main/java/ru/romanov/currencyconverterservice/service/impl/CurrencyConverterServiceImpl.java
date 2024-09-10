@@ -27,62 +27,32 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
     private final CurrencyConfig currencyConfig;
     private final CurrencyConversionRepository currencyConversionRepository;
 
-    /**
-     * Получает текущие курсы валют с помощью клиента обменного курса.
-     *
-     * @return объект CurrencyResponse с текущими курсами валют
-     */
     @Override
     public CurrencyResponse getDailyCurrencyRates() {
         return exchangeRateClient.getDailyCurrencyRates();
     }
 
-    /**
-     * Выполняет конвертацию указанного количества валюты из одной валюты в другую.
-     *
-     * @param from   код валюты, из которой выполняется конвертация
-     * @param to     код валюты, в которую выполняется конвертация
-     * @param amount количество валюты для конвертации
-     * @return сконвертированная сумма в указанной валюте или Double.NaN, если конвертация невозможна
-     */
     @Override
     public double convert(String from, String to, double amount) {
-        if (!getSupportedCurrenciesCharCode().contains(from) || !getSupportedCurrenciesCharCode().contains(to)) {
+        if (!getSupportedCurrenciesCharCode().contains(from) || !getSupportedCurrenciesCharCode().contains(to))
             return Double.NaN;
-        }
         CurrencyResponse response = getDailyCurrencyRates();
         Currency fromCurrency = (from.equalsIgnoreCase("RUB") ? setRUB() : response.getValute().get(from.toUpperCase()));
         Currency toCurrency = (to.equalsIgnoreCase("RUB") ? setRUB() : response.getValute().get(to.toUpperCase()));
-
-        if (fromCurrency == null || toCurrency == null) {
+        if (fromCurrency == null || toCurrency == null) return Double.NaN;
+        if (fromCurrency.getValue() == 0 || fromCurrency.getNominal() == 0 || toCurrency.getValue() == 0 || toCurrency.getNominal() == 0)
             return Double.NaN;
-        }
-        if (fromCurrency.getValue() == 0 || fromCurrency.getNominal() == 0 || toCurrency.getValue() == 0 || toCurrency.getNominal() == 0) {
-            return Double.NaN;
-        }
-        double amountFrom = fromCurrency.getValue() / fromCurrency.getNominal();
-        double amountTo = toCurrency.getValue() / toCurrency.getNominal();
-        double rate = amountFrom / amountTo;
+        double rate = (fromCurrency.getValue() / fromCurrency.getNominal()) / (toCurrency.getValue() / toCurrency.getNominal());
         double convertedAmount = Double.parseDouble(String.format("%.2f", amount * rate).replace(",", "."));
         saveConversion(from.toUpperCase(), amount, to.toUpperCase(), rate, convertedAmount);
         return convertedAmount;
     }
 
-    /**
-     * Получает карту поддерживаемых валют.
-     *
-     * @return карта, где ключ - код валюты, значение - название валюты
-     */
     @Override
     public Map<String, String> getSupportedCurrencies() {
         return currencyConfig.getCodes();
     }
 
-    /**
-     * Получает список поддерживаемых кодов валют.
-     *
-     * @return список строк с кодами валют
-     */
     @Override
     public List<String> getSupportedCurrenciesCharCode() {
         Map<String, String> supported = currencyConfig.getCodes();
@@ -90,13 +60,13 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
     }
 
     /**
-     * Сохраняет информацию о конверсии в базе данных.
+     * Сохраняет информацию о конвертации в базе данных.
      *
-     * @param fromCurrency           код валюты, из которой происходит конверсия
-     * @param amountBeforeConversion количество валюты до конверсии
-     * @param toCurrency             код валюты, в которую происходит конверсия
-     * @param conversionRate         курс конверсии
-     * @param amountAfterConversion  количество валюты после конверсии
+     * @param fromCurrency           Код валюты, из которой происходит конвертация.
+     * @param amountBeforeConversion Количество валюты до конвертации.
+     * @param toCurrency             Код валюты, в которую происходит конвертация.
+     * @param conversionRate         Курс конвертации.
+     * @param amountAfterConversion  Количество валюты после конвертации.
      */
     public void saveConversion(String fromCurrency, double amountBeforeConversion, String toCurrency, double conversionRate, double amountAfterConversion) {
         CurrencyConversion conversion = new CurrencyConversion();
@@ -112,7 +82,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
     /**
      * Устанавливает значения по умолчанию для валюты RUB.
      *
-     * @return объект Currency с установленными значениями
+     * @return Объект {@link Currency} с установленными значениями.
      */
     public Currency setRUB() {
         Currency currency = new Currency();

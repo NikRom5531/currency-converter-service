@@ -11,7 +11,7 @@ import ru.romanov.currencyconverterservice.model.CurrencyResponse;
  * от внешнего сервиса. Интерфейс аннотирован {@code @FeignClient}, что позволяет
  * Spring использовать его как клиент для взаимодействия с другим микросервисом.
  * <p>
- * Аннотация {@code @FeignClient} определяет имя клиента (в данном случае "exchange-rate-client")
+ * Аннотация {@code @FeignClient} определяет имя клиента (в данном случае {@code exchange-rate-client})
  * и URL-адрес внешнего сервиса, указанный в свойстве {@code exchange.rate.service.url}.
  * <p>
  * Метод {@code getDailyCurrencyRates()} выполняет HTTP GET запрос на эндпоинт {@code /daily_json.js}

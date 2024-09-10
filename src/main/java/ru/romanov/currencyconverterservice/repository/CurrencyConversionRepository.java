@@ -8,7 +8,7 @@ import ru.romanov.currencyconverterservice.model.CurrencyConversion;
  * Репозиторий для взаимодействия с сущностью конверсии валют в базе данных.
  * <p>
  * Данный интерфейс предоставляет методы для сохранения, обновления, удаления и поиска
- * объектов CurrencyConversion в базе данных. Он расширяет JpaRepository, что позволяет
+ * объектов {@link CurrencyConversion} в базе данных. Он расширяет {@link JpaRepository}, что позволяет
  * использовать стандартные методы доступа к данным.
  */
 @Repository

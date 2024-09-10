@@ -20,7 +20,7 @@ public class CurrencyConverterServiceApplication {
     /**
      * Метод main, который запускает приложение Spring Boot.
      *
-     * @param args аргументы командной строки (не используются)
+     * @param args Аргументы командной строки (не используются)
      */
     public static void main(String[] args) {
         SpringApplication.run(CurrencyConverterServiceApplication.class, args);
