@@ -14,6 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class CurrencyResponse {
+
     @JsonProperty("Date")
     private String date;
 

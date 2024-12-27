@@ -5,30 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <changeSet id="2024-06-09-23-46" author="NikRom5531">
-        <createTable tableName="currency_conversion">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="conversion_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-            <column name="currency_code_from" type="VARCHAR(3)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="amount_before_conversion" type="DECIMAL(19, 4)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="currency_code_to" type="VARCHAR(3)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="conversion_rate" type="DECIMAL(19, 6)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="amount_after_conversion" type="DECIMAL(19, 4)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
+        <includeAll path="v1" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

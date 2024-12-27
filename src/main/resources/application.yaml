@@ -2,11 +2,10 @@ spring:
   application:
     name: currency-converter-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/currency_transfer
-    username: postgres
-    password: root
     driver-class-name: org.postgresql.Driver
-
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
@@ -14,17 +13,16 @@ spring:
       dialect: org.hibernate.dialect.PostgreSQL95Dialect
     hibernate:
       ddl-auto: none
-
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
 
 server:
-  port: 8083
+  port: ${SERVER_PORT}
 
 exchange:
   rate:
     service:
-      url: https://www.cbr-xml-daily.ru
+      url: ${EXCHANGE_RATE_SERVICE_URL}
 
 currencies:
   codes:

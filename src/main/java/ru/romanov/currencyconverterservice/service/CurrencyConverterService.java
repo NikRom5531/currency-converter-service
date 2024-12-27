@@ -42,4 +42,6 @@ public interface CurrencyConverterService {
      * @return Список строк с кодами валют.
      */
     List<String> getSupportedCurrenciesCharCode();
+
+    double getCurrencyRate(String fromCurrency, String toCurrency);
 }
